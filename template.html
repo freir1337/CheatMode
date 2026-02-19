@@ -1,29 +1,30 @@
-<!-- Шаблон для настройки стиля -->
-<template id="style-setting-template">
-  <div class="setting-row">
-    <input type="text" class="setting-label" placeholder="Название параметра">
-    <div class="slider-wrapper">
-      <input type="range" class="setting-slider" min="0" max="100" value="50">
-      <span class="percent">50%</span>
+<div id="cheatmod-panel" style="display:none">
+    <div class="cheatmod-header">
+        <div>📊 Читмод</div>
+        <button id="cheatmod-x">✕</button>
     </div>
-    <button class="delete-btn">🗑️</button>
-  </div>
-</template>
 
-<!-- Шаблон для кастомной фразы -->
-<template id="phrase-template">
-  <div class="setting-row">
-    <input type="text" class="phrase-input" placeholder="Текст фразы">
-    <button class="delete-btn">🗑️</button>
-  </div>
-</template>
+    <div class="section">
+        <h3>🌍 Настройки мира и стилей (Боевик)</h3>
+        <div class="slider-item"><span>Повествование в стиле писателя Ли Чайлд</span><input type="range" min="0" max="100" value="60"><span class="percent">60%</span></div>
+    
+    </div>
 
-<!-- Шаблон для отношения персонажей -->
-<template id="relation-template">
-  <div class="relation-row">
-    <select class="char-select"></select>
-    <span class="arrow">→</span>
-    <select class="char-select"></select>
-    <button class="delete-btn">🗑️</button>
-  </div>
-</template>
+    <div class="section">
+        <h3>📝 Заметки</h3>
+        <div id="notes-list"></div>
+        <input id="new-note" placeholder="Да, тут пишешь что угодно...">
+        <button id="add-note-btn">+ Добавить</button>
+    </div>
+
+    <div class="section">
+        <h3>❤️ Отношения персонажей</h3>
+        <div id="relationships-list"></div>
+        <button id="add-relationship-btn" style="width:100%;background:#ff9500">+ Добавить зависимость</button>
+    </div>
+
+    <div class="footer">
+        <button id="cheatmod-save">💾 Сохранить</button>
+        <button id="cheatmod-close">✕ Закрыть</button>
+    </div>
+</div>

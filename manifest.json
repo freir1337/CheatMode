@@ -1,11 +1,11 @@
 {
-  "name": "CheatMode",
-  "author": "freir1337",
-  "version": "1.0.0",
-  "description": "Расширение для тонкой настройки стиля повествования и отношений персонажей в Silly Tavern",
-  "main": "index.js",
-  "css": ["style.css"],
-  "html": ["settings.html", "template.html"],
-  "dependencies": [],
-  "permissions": ["prompt-modify", "settings-write", "character-read"]
+    "display_name": "Читмод",
+    "author": "freir1337 & команда",
+    "version": "1.0.0",
+    "description": "Ползунки стилей, заметки, отношения персонажей + автоматическая инъекция промптов",
+    "js": "index.js",
+    "css": "style.css",
+    "homePage": "https://github.com/freir1337/CheatMode",
+    "loading_order": 80,
+    "generate_interceptor": "cheatmodInterceptor"
 }
