@@ -1,11 +1,10 @@
 {
     "display_name": "Читмод",
-    "author": "secret",
-    "version": "1.2.0",
-    "description": "Ползунки стилей + заметки + отношения персонажей (авто-промпты)",
+    "author": "freir1337",
+    "version": "2.0.0",
+    "description": "Ползунки стилей, заметки, отношения персонажей — скрытые промпты к нейросети",
     "js": "index.js",
     "css": "style.css",
     "homePage": "https://github.com/freir1337/CheatMode",
-    "loading_order": 80,
-    "generate_interceptor": "cheatmodInterceptor"
+    "loading_order": 80
 }
