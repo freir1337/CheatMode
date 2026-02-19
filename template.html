@@ -1,0 +1,29 @@
+<!-- Шаблон для настройки стиля -->
+<template id="style-setting-template">
+  <div class="setting-row">
+    <input type="text" class="setting-label" placeholder="Название параметра">
+    <div class="slider-wrapper">
+      <input type="range" class="setting-slider" min="0" max="100" value="50">
+      <span class="percent">50%</span>
+    </div>
+    <button class="delete-btn">🗑️</button>
+  </div>
+</template>
+
+<!-- Шаблон для кастомной фразы -->
+<template id="phrase-template">
+  <div class="setting-row">
+    <input type="text" class="phrase-input" placeholder="Текст фразы">
+    <button class="delete-btn">🗑️</button>
+  </div>
+</template>
+
+<!-- Шаблон для отношения персонажей -->
+<template id="relation-template">
+  <div class="relation-row">
+    <select class="char-select"></select>
+    <span class="arrow">→</span>
+    <select class="char-select"></select>
+    <button class="delete-btn">🗑️</button>
+  </div>
+</template>

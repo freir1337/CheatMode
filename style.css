@@ -1,28 +1,70 @@
-:root {
-        --cm-bg: #0c1a2f;
-            --cm-bg2: #13253f;
-                --cm-bg3: #1e2937;
-                    --cm-accent: #00d4ff;
-                        --cm-accent-lt: #4de1ff;
-                            --cm-text: #e0f0ff;
-                                --cm-muted: #94b0d0;
-                                    --cm-border: rgba(0,212,255,0.25);
-                                        --cm-radius: 14px;
-                                        }
+/* Полностью повторяем стили RPG Companion, адаптированные под наш интерфейс */
+.cheatmode-container {
+  padding: 1rem;
+  background: var(--bg-primary);
+  border-radius: 8px;
+  min-width: 700px;
+}
 
-                                        #cm-float, .cheatmod-panel { z-index: 99999 !important; }
-                                        .cheatmod-panel {
-                                            position: fixed; top: 80px; right: 24px; width: 480px;
-                                                background: var(--cm-bg); border: 3px solid var(--cm-accent);
-                                                    border-radius: var(--cm-radius); box-shadow: 0 0 50px rgba(0,212,255,0.6);
-                                                        color: var(--cm-text); font-family: system-ui, sans-serif; overflow: hidden;
-                                                        }
-                                                        .cheatmod-header {
-                                                            background: #081525; padding: 14px 18px; display: flex; justify-content: space-between;
-                                                                align-items: center; cursor: move; border-bottom: 1px solid #00d4ff33;
-                                                                }
-                                                                .cheatmod-title { font-size: 20px; font-weight: 700; color: var(--cm-accent); }
-                                                                .cheatmod-content { max-height: 75vh; overflow-y: auto; padding: 18px; }
-                                                                .collapsed { width: 64px !important; height: 64px !important; border-radius: 50% !important; }
-                                                                .cm-btn { background: var(--cm-accent); color: #081525; padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
-                                                                .cm-btn:hover { background: var(--cm-accent-lt); }
+.cheatmode-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.cheatmode-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-radius: 6px;
+}
+
+.setting-row, .relation-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+.slider-wrapper {
+  flex: 3;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.setting-slider {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--bg-tertiary);
+  accent-color: var(--accent-color);
+}
+
+.percent {
+  min-width: 40px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.add-btn, .delete-btn, .btn {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--success-color);
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
