@@ -1,181 +1,171 @@
 const MODULE_NAME = 'cheatmod';
-const { eventSource, event_types, extensionSettings, saveSettingsDebounced, renderExtensionTemplateAsync } = SillyTavern.getContext();
+const ctx = SillyTavern.getContext();
+const { eventSource, event_types, extension_settings, saveSettingsDebounced, Popup } = ctx;
 
-let currentSettings = {};
-
-function getDefaultSettings() {
-    return {
-        enabled: true,
-        sliders: {
-            "Повествование в стиле писателя Ли Чайлд": 60,
-            "Развитие сюжета в стиле писателя Роберт Ладлэм": 40,
-            "Написание диалогов в стиле писателя Элмор Леонард": 40,
-            "Реалистичность действий и последствий": 80,
-            "Напряжение и саспенс в сценах": 70,
-            "Натуралистичность жестокости (Gore)": 40,
-            "Темп развития событий": 70,
-            "Подробные описания физических ощущений": 60,
-            "Использовать в тексте слова: озон": 0,
-            "Мат в диалогах": 20
-        },
-        notes: ["Да, тут пишешь что угодно. Небо всегда зеленое, слоп всегда отборный!"],
-        relationships: []  // [{char1: "Барб Уайр", char2: "Адам Смэшер", type: "Друзья", affinity: 50}]
-    };
+let settings = extension_settings[MODULE_NAME] || {};
+if (!settings.sliders) {
+    settings.sliders = [
+        {id: 'leechild', label: 'Повествование в стиле писателя Ли Чайлд', value: 60, template: 'Пиши повествование строго в стиле Ли Чайлд на {{value}}%: короткие рубленые предложения, максимум экшена, минимум описаний.'},
+        {id: 'ludlum', label: 'Развитие сюжета в стиле писателя Роберт Ладлэм', value: 40, template: 'Развивай сюжет в стиле Роберта Ладлэма на {{value}}%: заговоры, повороты, высокие ставки.'},
+        {id: 'leonard', label: 'Написание диалогов в стиле писателя Элмор Леонард', value: 40, template: 'Пиши диалоги в стиле Элмора Леонарда на {{value}}%: реалистично, коротко, с характером и матом.'},
+        {id: 'realism', label: 'Реалистичность действий и последствий', value: 80, template: 'Действия и последствия должны быть реалистичными на {{value}}%.'},
+        {id: 'suspense', label: 'Напряжение и саспенс в сценах', value: 70, template: 'Добавляй напряжение и саспенс на {{value}}%.'},
+        {id: 'gore', label: 'Натуралистичность жестокости (Gore)', value: 40, template: 'Описывай жестокость натуралистично на {{value}}%.'},
+        {id: 'pace', label: 'Темп развития событий', value: 70, template: 'Держи темп событий на {{value}}%.'},
+        {id: 'sensations', label: 'Подробные описания физических ощущений', value: 60, template: 'Описывай физические ощущения подробно на {{value}}%.'},
+        {id: 'ozone', label: 'Использовать в тексте слова: озон', value: 0, template: 'Вставляй слово "озон" {{value}} раз в ответ.'},
+        {id: 'swear', label: 'Мат в диалогах', value: 20, template: 'Мат в диалогах на {{value}}% интенсивности.'}
+    ];
+    settings.notes = ["Да, тут пишешь что угодно. Небо всегда зеленое, слоп всегда отборный!"];
+    settings.relationships = [];
 }
+extension_settings[MODULE_NAME] = settings;
+saveSettingsDebounced();
 
-async function loadPanel() {
-    try {
-        const html = await renderExtensionTemplateAsync(MODULE_NAME, 'template');
-        $('body').append(html);
-        initPanel();
-        console.log('✅ Читмод v1.0 загружен');
-    } catch (e) {
-        console.error('CheatMod load error:', e);
-    }
-}
+let panel;
 
-function initPanel() {
-    currentSettings = extensionSettings[MODULE_NAME] || getDefaultSettings();
-    if (!extensionSettings[MODULE_NAME]) extensionSettings[MODULE_NAME] = currentSettings;
+function createPanel() {
+    panel = document.createElement('div');
+    panel.id = 'cheatmod-panel';
+    panel.innerHTML = `
+        <div class="cheatmod-header">
+            <div>📊 Читмод</div>
+            <button id="close-btn">✕</button>
+        </div>
+        <div class="section">
+            <h3>🌍 Настройки мира и стилей (Боевик)</h3>
+            <div id="sliders"></div>
+        </div>
+        <div class="section">
+            <h3>📝 Заметки</h3>
+            <div id="notes-list"></div>
+            <input id="new-note" placeholder="Да, тут пишешь что угодно...">
+            <button id="add-note">+ Добавить</button>
+        </div>
+        <div class="section">
+            <h3>❤️ Отношения персонажей</h3>
+            <div id="relations-list"></div>
+            <button id="add-relation">+ Добавить зависимость</button>
+        </div>
+        <div class="footer">
+            <button id="save-btn">💾 Сохранить</button>
+            <button id="export-btn">Экспорт пресета</button>
+        </div>
+    `;
+    document.body.appendChild(panel);
 
     renderSliders();
     renderNotes();
-    renderRelationships();
+    renderRelations();
 
-    // Плавающая кнопка
-    const floatBtn = $('<div id="cheatmod-float-btn">📊</div>').css({
-        position: 'fixed', bottom: '25px', right: '25px', width: '56px', height: '56px',
-        background: 'linear-gradient(135deg, #ff9500, #ff2d55)', color: '#fff',
-        borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: '28px', cursor: 'pointer', zIndex: 99999, boxShadow: '0 4px 20px rgba(255,149,0,0.6)'
-    }).on('click', () => $('#cheatmod-panel').toggle());
-    $('body').append(floatBtn);
-
-    $('#cheatmod-save').on('click', saveAll);
-    $('#cheatmod-close, #cheatmod-x').on('click', () => $('#cheatmod-panel').hide());
-    $('#add-note-btn').on('click', addNote);
-    $('#add-relationship-btn').on('click', addRelationship);
+    panel.querySelector('#add-note').onclick = addNote;
+    panel.querySelector('#add-relation').onclick = addRelation;
+    panel.querySelector('#save-btn').onclick = () => { saveSettingsDebounced(); toastr.success('Сохранено!'); panel.style.display = 'none'; };
+    panel.querySelector('#close-btn').onclick = () => panel.style.display = 'none';
+    panel.querySelector('#export-btn').onclick = exportPreset;
 }
 
 function renderSliders() {
-    $('.slider-item').each(function() {
-        const label = $(this).find('span:first').text().trim();
-        const slider = $(this).find('input[type=range]');
-        const percent = $(this).find('.percent');
-        const val = currentSettings.sliders[label] !== undefined ? currentSettings.sliders[label] : 50;
-        slider.val(val);
-        percent.text(val + '%');
-        slider.on('input', () => {
-            currentSettings.sliders[label] = parseInt(slider.val());
-            percent.text(slider.val() + '%');
-        });
+    const container = panel.querySelector('#sliders');
+    container.innerHTML = '';
+    settings.sliders.forEach((s, i) => {
+        const div = document.createElement('div');
+        div.className = 'slider-item';
+        div.innerHTML = `
+            <span>${s.label}</span>
+            <input type="range" min="0" max="100" value="${s.value}">
+            <span class="percent">${s.value}%</span>
+            <button class="trash-btn">🗑</button>
+        `;
+        const range = div.querySelector('input');
+        range.oninput = () => {
+            s.value = +range.value;
+            div.querySelector('.percent').textContent = s.value + '%';
+        };
+        div.querySelector('.trash-btn').onclick = () => {
+            if (confirm('Удалить ползунок?')) {
+                settings.sliders.splice(i, 1);
+                renderSliders();
+            }
+        };
+        container.appendChild(div);
     });
 }
 
 function renderNotes() {
-    const container = $('#notes-list');
-    container.empty();
-    currentSettings.notes.forEach((note, i) => {
-        const div = $(`<div class="note-item"><span>${note}</span><button class="trash-btn">🗑</button></div>`);
-        div.find('.trash-btn').on('click', () => {
-            currentSettings.notes.splice(i, 1);
+    const list = panel.querySelector('#notes-list');
+    list.innerHTML = settings.notes.map((note, i) => `
+        <div class="note-item">
+            ${note}
+            <button class="trash-btn" data-i="${i}">🗑</button>
+        </div>
+    `).join('');
+    list.querySelectorAll('.trash-btn').forEach(btn => {
+        btn.onclick = () => {
+            settings.notes.splice(+btn.dataset.i, 1);
             renderNotes();
-        });
-        container.append(div);
+        };
     });
 }
 
 function addNote() {
-    const input = $('#new-note').val().trim();
-    if (input) {
-        currentSettings.notes.push(input);
-        $('#new-note').val('');
+    const input = panel.querySelector('#new-note');
+    if (input.value.trim()) {
+        settings.notes.push(input.value.trim());
         renderNotes();
+        input.value = '';
     }
 }
 
-function renderRelationships() {
-    const container = $('#relationships-list');
-    container.empty();
-    currentSettings.relationships.forEach((rel, i) => {
-        const div = $(`
-            <div class="relationship-row">
-                <span>${rel.char1}</span> → <span>${rel.char2}</span>
-                <select class="rel-type"><option>Друзья</option><option>Враги</option><option>Любовники</option><option>Незнакомцы</option></select>
-                <input type="range" min="0" max="100" value="${rel.affinity}">
-                <span class="percent">${rel.affinity}%</span>
-                <button class="trash-btn">🗑</button>
-            </div>`);
-        div.find('select').val(rel.type);
-        div.find('input[type=range]').on('input', function() {
-            rel.affinity = parseInt(this.value);
-            $(this).siblings('.percent').text(this.value + '%');
-        });
-        div.find('select').on('change', () => rel.type = $(this).val());
-        div.find('.trash-btn').on('click', () => {
-            currentSettings.relationships.splice(i, 1);
-            renderRelationships();
-        });
-        container.append(div);
-    });
+function renderRelations() {
+    const list = panel.querySelector('#relations-list');
+    list.innerHTML = settings.relationships.map((r, i) => `
+        <div class="rel-row">
+            ${r.char1} → ${r.char2} (${r.type || 'Друзья'} ${r.affinity || 50}%)
+            <button class="trash-btn" data-i="${i}">🗑</button>
+        </div>
+    `).join('');
+    // добавь логику изменения процентов позже
 }
 
-function addRelationship() {
+function addRelation() {
     const char1 = prompt("Имя первого персонажа:");
     const char2 = prompt("Имя второго персонажа:");
     if (char1 && char2) {
-        currentSettings.relationships.push({char1, char2, type: "Друзья", affinity: 50});
-        renderRelationships();
+        settings.relationships.push({char1, char2, type: 'Друзья', affinity: 50});
+        renderRelations();
     }
 }
 
-function saveAll() {
-    extensionSettings[MODULE_NAME] = currentSettings;
-    saveSettingsDebounced();
-    toastr.success('✅ Читмод сохранён! Теперь влияет на все генерации');
-    $('#cheatmod-panel').hide();
+function exportPreset() {
+    const data = JSON.stringify(settings, null, 2);
+    const blob = new Blob([data], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'cheatmod_preset.json'; a.click();
 }
 
-// ====================== INTERCEPTOR (главная магия) ======================
-globalThis.cheatmodInterceptor = async function(chat, contextSize, abort, type) {
-    if (!currentSettings.enabled || !currentSettings) return;
-
-    let prompt = `\n\n[Читмод — строгие инструкции для ИИ (следуй на 100%):]\n`;
-
-    // Ползунки
-    prompt += "Стиль повествования:\n";
-    for (const [label, value] of Object.entries(currentSettings.sliders)) {
-        if (value > 0) prompt += `- ${label}: ${value}%\n`;
+globalThis.cheatmodInterceptor = async function(chat) {
+    let instr = '\n[Читмод — СТРОГИЕ инструкции ИИ (выполняй на 100%)]\n';
+    settings.sliders.forEach(s => {
+        if (s.value > 0) instr += s.template.replace('{{value}}', s.value) + '\n';
+    });
+    if (settings.notes.length) instr += '\nДополнительные правила:\n' + settings.notes.join('\n') + '\n';
+    if (settings.relationships.length) {
+        instr += '\nОтношения персонажей:\n';
+        settings.relationships.forEach(r => instr += `- ${r.char1} и ${r.char2}: ${r.type} (${r.affinity}%)\n`);
     }
+    instr += '[Конец Читмод — соблюдай строго!]\n\n';
 
-    // Заметки
-    if (currentSettings.notes.length) {
-        prompt += "\nДополнительные жёсткие правила:\n";
-        currentSettings.notes.forEach(n => prompt += `- ${n}\n`);
-    }
-
-    // Отношения
-    if (currentSettings.relationships.length) {
-        prompt += "\nОтношения персонажей (учитывай при генерации):\n";
-        currentSettings.relationships.forEach(r => {
-            prompt += `- ${r.char1} и ${r.char2}: ${r.type} (${r.affinity}%)\n`;
-        });
-    }
-
-    prompt += "\n[Конец Читмод инструкций — строго соблюдай!]\n\n";
-
-    // Добавляем в начало последнего системного сообщения или создаём новое
-    const systemMsgIndex = chat.findIndex(m => !m.is_user && m.mes.includes("System"));
-    if (systemMsgIndex !== -1) {
-        chat[systemMsgIndex].mes += prompt;
-    } else {
-        chat.unshift({
-            is_user: false,
-            name: "System",
-            mes: prompt,
-            send_date: Date.now()
-        });
-    }
+    chat.unshift({is_user: false, name: 'System', mes: instr});
 };
 
-eventSource.on(event_types.APP_READY, loadPanel);
+eventSource.on(event_types.APP_READY, () => {
+    createPanel();
+    const btn = document.createElement('div');
+    btn.textContent = '📊';
+    btn.style.cssText = 'position:fixed;bottom:25px;right:25px;width:56px;height:56px;background:linear-gradient(135deg,#ff9500,#ff2d55);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;z-index:99999;box-shadow:0 4px 20px rgba(255,149,0,0.6);';
+    btn.onclick = () => panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+    document.body.appendChild(btn);
+    console.log('✅ Читмод загружен');
+});

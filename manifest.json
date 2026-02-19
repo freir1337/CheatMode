@@ -1,8 +1,8 @@
 {
     "display_name": "Читмод",
-    "author": "freir1337 & команда",
-    "version": "1.0.0",
-    "description": "Ползунки стилей, заметки, отношения персонажей + автоматическая инъекция промптов",
+    "author": "secret",
+    "version": "1.2.0",
+    "description": "Ползунки стилей + заметки + отношения персонажей (авто-промпты)",
     "js": "index.js",
     "css": "style.css",
     "homePage": "https://github.com/freir1337/CheatMode",
