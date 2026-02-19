@@ -1,14 +1,14 @@
 /* =========================================================
-   CheatMode v2.0 — SillyTavern Extension Styles
+   CheatMode v3.0 — SillyTavern Extension Styles
    ========================================================= */
 
-/* === FAB — плавающая кнопка === */
+/* === FAB === */
 #cheatmod-fab {
     position: fixed;
-    bottom: 80px;
-    right: 20px;
-    width: 46px;
-    height: 46px;
+    bottom: 90px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
     background: #c8a32a;
     border-radius: 50%;
     display: flex;
@@ -16,36 +16,33 @@
     justify-content: center;
     font-size: 20px;
     cursor: pointer;
-    z-index: 10000;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    z-index: 10001;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.6);
     user-select: none;
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    transition: transform 0.18s, box-shadow 0.18s;
 }
-#cheatmod-fab:hover {
-    transform: scale(1.12);
-    box-shadow: 0 6px 28px rgba(200, 163, 42, 0.5);
-}
+#cheatmod-fab:hover { transform: scale(1.12); box-shadow: 0 6px 24px rgba(200,163,42,0.5); }
 
 /* === Главная панель === */
 #cheatmod-panel {
     position: fixed;
-    top: 60px;
-    right: 28px;
-    width: 500px;
-    max-height: 82vh;
+    top: 50px;
+    right: 20px;
+    width: 480px;
+    max-width: calc(100vw - 24px);
+    max-height: 85vh;
     background: #17120a;
     border: 1.5px solid #c8a32a;
     border-radius: 12px;
-    z-index: 9999;
-    display: flex;          /* показывается через style.display = 'flex' */
+    z-index: 10000;
+    display: flex;
     flex-direction: column;
     font-family: 'Segoe UI', system-ui, sans-serif;
     color: #e5d080;
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.85);
+    box-shadow: 0 12px 48px rgba(0,0,0,0.85);
     overflow: hidden;
 }
 
-/* === Шапка === */
 .cm-header {
     display: flex;
     align-items: center;
@@ -55,19 +52,11 @@
     border-bottom: 1px solid #c8a32a33;
     cursor: grab;
     user-select: none;
+    flex-shrink: 0;
 }
 .cm-header:active { cursor: grabbing; }
-
-.cm-title {
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-}
-
-.cm-header-btns {
-    display: flex;
-    gap: 6px;
-}
+.cm-title { font-size: 15px; font-weight: 700; }
+.cm-header-btns { display: flex; gap: 6px; }
 .cm-header-btns button {
     background: transparent;
     border: 1px solid #c8a32a44;
@@ -78,11 +67,8 @@
     font-size: 13px;
     transition: background 0.15s;
 }
-.cm-header-btns button:hover {
-    background: #c8a32a22;
-}
+.cm-header-btns button:hover { background: #c8a32a22; }
 
-/* === Тело (прокручивается) === */
 .cm-body {
     flex: 1;
     overflow-y: auto;
@@ -90,20 +76,14 @@
     display: flex;
     flex-direction: column;
     gap: 18px;
+    overscroll-behavior: contain;
 }
-.cm-body::-webkit-scrollbar { width: 5px; }
-.cm-body::-webkit-scrollbar-track { background: transparent; }
-.cm-body::-webkit-scrollbar-thumb { background: #c8a32a44; border-radius: 4px; }
-.cm-body::-webkit-scrollbar-thumb:hover { background: #c8a32a88; }
+.cm-body::-webkit-scrollbar { width: 4px; }
+.cm-body::-webkit-scrollbar-thumb { background: #c8a32a55; border-radius: 4px; }
 
-/* === Секция === */
-.cm-section {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
+.cm-section { display: flex; flex-direction: column; gap: 8px; }
 .cm-section-label {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     color: #c8a32a;
     text-transform: uppercase;
@@ -112,7 +92,6 @@
     border-bottom: 1px solid #c8a32a28;
 }
 
-/* === Ползунок === */
 .cm-slider-block {
     background: #1c1508;
     border: 1px solid #2a2008;
@@ -124,52 +103,25 @@
     transition: border-color 0.2s;
 }
 .cm-slider-block:hover { border-color: #c8a32a44; }
+.cm-slider-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.cm-slider-name { font-size: 12.5px; color: #d4bc6a; line-height: 1.35; }
+.cm-slider-foot { display: flex; align-items: center; gap: 10px; }
+.cm-slider-foot input[type=range] { flex: 1; accent-color: #c8a32a; cursor: pointer; min-width: 0; }
+.cm-pct { min-width: 36px; font-size: 13px; font-weight: 700; color: #c8a32a; text-align: right; }
 
-.cm-slider-head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 8px;
-}
-.cm-slider-name {
-    font-size: 12.5px;
-    color: #d4bc6a;
-    line-height: 1.35;
-}
-.cm-slider-foot {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.cm-slider-foot input[type=range] {
-    flex: 1;
-    accent-color: #c8a32a;
-    cursor: pointer;
-    height: 3px;
-}
-.cm-pct {
-    min-width: 36px;
-    font-size: 13px;
-    font-weight: 700;
-    color: #c8a32a;
-    text-align: right;
-}
-
-/* === Корзина === */
-.cm-btn-trash {
+.cm-trash {
     background: transparent;
     border: none;
     color: #555;
     cursor: pointer;
     font-size: 14px;
-    padding: 1px 3px;
+    padding: 2px 4px;
     flex-shrink: 0;
     transition: color 0.15s;
     line-height: 1;
 }
-.cm-btn-trash:hover { color: #e05050; }
+.cm-trash:hover { color: #e05050; }
 
-/* === Кнопки добавить === */
 .cm-btn-add {
     align-self: flex-start;
     background: transparent;
@@ -181,16 +133,9 @@
     cursor: pointer;
     transition: background 0.15s, border-color 0.15s;
 }
-.cm-btn-add:hover {
-    background: #c8a32a18;
-    border-color: #c8a32a;
-}
+.cm-btn-add:hover { background: #c8a32a18; border-color: #c8a32a; }
 
-/* === Строка ввода заметки === */
-.cm-input-row {
-    display: flex;
-    gap: 8px;
-}
+.cm-input-row { display: flex; gap: 8px; }
 .cm-input-row input {
     flex: 1;
     background: #111008;
@@ -200,11 +145,11 @@
     padding: 7px 10px;
     font-size: 13px;
     outline: none;
+    min-width: 0;
     transition: border-color 0.2s;
 }
 .cm-input-row input:focus { border-color: #c8a32a; }
 .cm-input-row input::placeholder { color: #444; }
-
 .cm-btn-add-inline {
     background: #c8a32a;
     border: none;
@@ -215,11 +160,11 @@
     padding: 0 14px;
     cursor: pointer;
     white-space: nowrap;
+    flex-shrink: 0;
     transition: background 0.15s;
 }
 .cm-btn-add-inline:hover { background: #e0b830; }
 
-/* === Заметка === */
 .cm-note-row {
     display: flex;
     align-items: center;
@@ -234,7 +179,6 @@
 }
 .cm-note-row span { flex: 1; }
 
-/* === Блок отношений === */
 .cm-rel-block {
     background: #1c1508;
     border: 1px solid #2a2008;
@@ -243,25 +187,10 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    transition: border-color 0.2s;
 }
-.cm-rel-block:hover { border-color: #c8a32a44; }
-
-.cm-rel-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-.cm-rel-names {
-    font-size: 13px;
-    font-weight: 600;
-    color: #d4bc6a;
-}
-.cm-rel-foot {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+.cm-rel-head { display: flex; align-items: center; justify-content: space-between; }
+.cm-rel-names { font-size: 13px; font-weight: 600; color: #d4bc6a; }
+.cm-rel-foot { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .cm-rel-type {
     background: #111008;
     border: 1px solid #c8a32a44;
@@ -272,27 +201,16 @@
     cursor: pointer;
     outline: none;
 }
-.cm-affinity-slider {
-    flex: 1;
-    accent-color: #d95f5f;
-    cursor: pointer;
-    height: 3px;
-}
-.cm-affinity-val {
-    min-width: 36px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #d95f5f;
-    text-align: right;
-}
+.cm-affinity-sl { flex: 1; min-width: 60px; accent-color: #d95f5f; cursor: pointer; }
+.cm-affinity-val { min-width: 36px; font-size: 12px; font-weight: 700; color: #d95f5f; text-align: right; }
 
-/* === Футер === */
 .cm-footer {
     display: flex;
     gap: 8px;
     padding: 11px 16px;
     background: #201808;
     border-top: 1px solid #c8a32a28;
+    flex-shrink: 0;
 }
 .cm-footer button {
     flex: 1;
@@ -306,55 +224,48 @@
     transition: background 0.15s;
 }
 .cm-footer button:hover { background: #c8a32a18; }
-
-.cm-btn-primary {
-    background: #c8a32a !important;
-    color: #0d0900 !important;
-    font-weight: 700 !important;
-    border-color: #c8a32a !important;
-}
-.cm-btn-primary:hover { background: #e0b830 !important; }
-
-#cm-btn-close-bot {
-    border-color: #44444466;
-    color: #888 !important;
-}
+#cm-btn-save-bot { background: #c8a32a !important; color: #0d0900 !important; font-weight: 700 !important; border-color: #c8a32a !important; }
+#cm-btn-save-bot:hover { background: #e0b830 !important; }
+#cm-btn-close-bot { border-color: #44444455 !important; color: #888 !important; }
 
 /* =========================================================
-   Страница настроек в меню Extensions ST
+   Страница настроек в меню Extensions
    ========================================================= */
-.cm-ext-settings {
-    padding: 6px 0 12px;
+#cheatmod-settings-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 6px 0;
 }
-.cm-ext-title {
-    font-size: 14px;
+.cm-ext-header {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #c8a32a33;
+}
+.cm-ext-header span {
+    font-size: 15px;
     font-weight: 700;
     color: #c8a32a;
-    margin-bottom: 6px;
 }
-.cm-ext-hint {
-    font-size: 12px;
-    color: #777;
-    margin-bottom: 12px;
-    line-height: 1.5;
-}
-.cm-ext-hint code {
-    background: #222;
-    padding: 1px 5px;
-    border-radius: 3px;
-    color: #c8a32a;
-    font-size: 11px;
-}
+.cm-ext-header small { font-size: 12px; color: #777; }
 
-.cm-tpl-block {
-    margin-bottom: 6px;
-}
+.cm-ext-section { display: flex; flex-direction: column; gap: 8px; }
+.cm-ext-label { font-size: 12px; font-weight: 700; color: #c8a32a; text-transform: uppercase; letter-spacing: 0.6px; }
+.cm-ext-hint { font-size: 12px; color: #777; line-height: 1.5; }
+.cm-ext-hint code { background: #222; padding: 1px 5px; border-radius: 3px; color: #e0b830; font-size: 11px; }
+.cm-ext-divider { border: none; border-top: 1px solid #2a2008; margin: 0; }
+
+/* Шаблоны */
+.cm-tpl-block { margin-bottom: 5px; }
 .cm-tpl-block details {
     background: #1c1508;
-    border: 1px solid #333;
+    border: 1px solid #2a2008;
     border-radius: 7px;
     overflow: hidden;
 }
+.cm-tpl-block details:hover { border-color: #c8a32a44; }
 .cm-tpl-summary {
     padding: 9px 12px;
     cursor: pointer;
@@ -363,42 +274,47 @@
     user-select: none;
     list-style: none;
 }
-.cm-tpl-summary::before { content: '▸ '; }
+.cm-tpl-summary::before { content: '▸ '; color: #c8a32a; }
 details[open] .cm-tpl-summary::before { content: '▾ '; }
-.cm-tpl-summary:hover { background: #c8a32a0f; }
-
+.cm-tpl-summary::-webkit-details-marker { display: none; }
 .cm-tpl-body {
     padding: 10px 12px;
     display: flex;
     flex-direction: column;
     gap: 5px;
-    border-top: 1px solid #333;
+    border-top: 1px solid #2a2008;
 }
-.cm-tpl-body label {
-    font-size: 11px;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-.cm-tpl-body input.cm-tpl-label,
-.cm-tpl-body textarea.cm-tpl-text {
+.cm-tpl-body label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; }
+.cm-tpl-body .cm-tpl-label,
+.cm-tpl-body .cm-tpl-text {
     background: #111008 !important;
     border: 1px solid #333 !important;
     border-radius: 5px !important;
     color: #e5d080 !important;
     padding: 6px 8px !important;
     font-size: 12px !important;
-    font-family: 'Consolas', 'Fira Code', monospace !important;
+    font-family: monospace !important;
     outline: none !important;
-    transition: border-color 0.2s !important;
     width: 100% !important;
     box-sizing: border-box !important;
     resize: vertical;
 }
-.cm-tpl-body textarea.cm-tpl-text {
-    min-height: 65px;
-}
-.cm-tpl-body input.cm-tpl-label:focus,
-.cm-tpl-body textarea.cm-tpl-text:focus {
-    border-color: #c8a32a !important;
+.cm-tpl-body .cm-tpl-text { min-height: 60px; }
+.cm-tpl-body .cm-tpl-label:focus,
+.cm-tpl-body .cm-tpl-text:focus { border-color: #c8a32a !important; }
+
+/* Мобильная адаптация */
+@media (max-width: 520px) {
+    #cheatmod-panel {
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100%;
+        max-height: 100dvh;
+        border-radius: 0;
+        border: none;
+        border-bottom: 2px solid #c8a32a;
+    }
+    #cheatmod-fab { bottom: 70px; right: 10px; }
 }

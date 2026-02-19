@@ -1,0 +1,43 @@
+<div id="cheatmod-settings-block">
+    <div class="cm-ext-header">
+        <span>✏️ Читмод</span>
+        <small>Редактируй шаблоны промптов для каждого ползунка</small>
+    </div>
+
+    <div class="cm-ext-section">
+        <div class="cm-ext-label">🌍 Ползунки и шаблоны промптов</div>
+        <div class="cm-ext-hint">
+            Используй <code>{value}</code> в шаблоне — подставится процент ползунка.
+        </div>
+        <div id="cm-settings-sliders-list"></div>
+        <button class="menu_button" id="cm-settings-add-slider">+ Добавить ползунок</button>
+    </div>
+
+    <hr class="cm-ext-divider">
+
+    <div class="cm-ext-section">
+        <div class="cm-ext-label">🔧 Общие настройки</div>
+        <label class="checkbox_label">
+            <input type="checkbox" id="cm-enabled-toggle">
+            <span>Включить CheatMode (вставлять промпты)</span>
+        </label>
+    </div>
+
+    <hr class="cm-ext-divider">
+
+    <div class="cm-ext-section">
+        <div class="cm-ext-label">💾 Пресеты</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="menu_button" id="cm-settings-export">⬇ Экспортировать пресет</button>
+            <button class="menu_button" id="cm-settings-import-btn">⬆ Импортировать пресет</button>
+            <input type="file" id="cm-settings-import-file" accept=".json" style="display:none">
+        </div>
+    </div>
+
+    <hr class="cm-ext-divider">
+
+    <div class="cm-ext-section">
+        <div class="cm-ext-label">🪟 Панель</div>
+        <button class="menu_button" id="cm-settings-open-panel">Открыть панель Читмод ✏️</button>
+    </div>
+</div>
