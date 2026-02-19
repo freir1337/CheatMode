@@ -1,10 +1,13 @@
 {
     "display_name": "Читмод",
-    "author": "freir1337",
-    "version": "3.0.0",
-    "description": "Ползунки стилей, заметки, отношения персонажей — скрытые промпты к нейросети",
+    "name": "cheatmod",
+    "version": "1.0.0",
+    "description": "Плавающая панель управления стилем, атмосферой и отношениями персонажей через скрытые промпты.",
+    "author": "cheatmod-team",
+    "homePage": "https://github.com/YOUR_USERNAME/cheatmod",
+    "requires": [],
+    "optional": [],
     "js": "index.js",
     "css": "style.css",
-    "homePage": "https://github.com/freir1337/CheatMode",
-    "loading_order": 80
+    "default_settings": {}
 }
