@@ -26,4 +26,3 @@
                                                                 .collapsed { width: 64px !important; height: 64px !important; border-radius: 50% !important; }
                                                                 .cm-btn { background: var(--cm-accent); color: #081525; padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
                                                                 .cm-btn:hover { background: var(--cm-accent-lt); }
-}
