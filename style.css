@@ -1,0 +1,29 @@
+:root {
+        --cm-bg: #0c1a2f;
+            --cm-bg2: #13253f;
+                --cm-bg3: #1e2937;
+                    --cm-accent: #00d4ff;
+                        --cm-accent-lt: #4de1ff;
+                            --cm-text: #e0f0ff;
+                                --cm-muted: #94b0d0;
+                                    --cm-border: rgba(0,212,255,0.25);
+                                        --cm-radius: 14px;
+                                        }
+
+                                        #cm-float, .cheatmod-panel { z-index: 99999 !important; }
+                                        .cheatmod-panel {
+                                            position: fixed; top: 80px; right: 24px; width: 480px;
+                                                background: var(--cm-bg); border: 3px solid var(--cm-accent);
+                                                    border-radius: var(--cm-radius); box-shadow: 0 0 50px rgba(0,212,255,0.6);
+                                                        color: var(--cm-text); font-family: system-ui, sans-serif; overflow: hidden;
+                                                        }
+                                                        .cheatmod-header {
+                                                            background: #081525; padding: 14px 18px; display: flex; justify-content: space-between;
+                                                                align-items: center; cursor: move; border-bottom: 1px solid #00d4ff33;
+                                                                }
+                                                                .cheatmod-title { font-size: 20px; font-weight: 700; color: var(--cm-accent); }
+                                                                .cheatmod-content { max-height: 75vh; overflow-y: auto; padding: 18px; }
+                                                                .collapsed { width: 64px !important; height: 64px !important; border-radius: 50% !important; }
+                                                                .cm-btn { background: var(--cm-accent); color: #081525; padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+                                                                .cm-btn:hover { background: var(--cm-accent-lt); }
+}

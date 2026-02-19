@@ -1,0 +1,9 @@
+{
+        "display_name": "CheatMod",
+            "loading_order": 100,
+                "js": "index.js",
+                    "css": "style.css",
+                        "version": "2.0.0",
+                            "auto_update": true
+                            }
+}
